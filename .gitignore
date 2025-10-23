@@ -1,0 +1,17 @@
+# IDEs y entornos
+.idea/
+.vscode/
+__pycache__/
+.venv/
+*.pyc
+
+# Datos locales (si en el futuro hay ficheros de datos)
+data/
+*.csv
+*.parquet
+*.db
+*.xlsx
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
