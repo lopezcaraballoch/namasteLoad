@@ -11,3 +11,8 @@ Once you have cloned and configured the namasteLoad repository, you can use a Ju
 
 You need have available screenshot images of the application *miCita Previa*, which have the following format:
 
+<p align="center">
+  <img src="imgs/Example_miCitaPrevia_screenshot_20250425_004139.jpg" alt="Example screenshot" width="25%">
+  <br>
+  <em>Example screenshot of <strong>miCita Previa</strong>.</em>
+</p>
