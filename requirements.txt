@@ -1,0 +1,10 @@
+# =========================================================
+# namasteLoad requirements
+# This file lists the Python dependencies for the NAMASTE project.
+# Install using:  pip install -r requirements.txt
+# =========================================================
+
+pandas>=2.2
+pytesseract>=0.3.10
+pillow>=10.0
+dateparser>=1.2
