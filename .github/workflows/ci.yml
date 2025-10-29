@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test-ubuntu:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install system dependences (Tesseract + languages)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr tesseract-ocr-eng tesseract-ocr-spa
+
+      - name: Install Python dependences
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run smoke test (package mode)
+        run: |
+          set -e
+          cd ..
+          python -m namasteLoad.main -i namasteLoad/examples/repo_screenshot_miCitaPrevia -o namasteLoad/examples
+          test -f namasteLoad/examples/REGISTRO.csv
+          test -f namasteLoad/examples/CITAS.csv
+          test -f namasteLoad/examples/CENTROMEDICO.csv
+          test -f namasteLoad/examples/Appointments.json
+          echo "✅ Smoke test passed"
