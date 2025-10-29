@@ -4,6 +4,12 @@
 
 <h1 align="center">namasteLoad — NAMASTE</h1>
 
+<p align="center">
+  <a href="https://github.com/lopezcaraballoch/namasteLoad/actions/workflows/ci.yml">
+    <img src="https://github.com/lopezcaraballoch/namasteLoad/actions/workflows/ci.yml/badge.svg" alt="CI Status"/>
+  </a>
+</p
+
 **namasteLoad** contains the code used to load, extract, and process screenshots that are used to build  
 the **NAMASTE** database (*Next Available Medical Appointment Survey for Tracking and Effectiveness*).  
 
@@ -43,6 +49,9 @@ which should follow the structure shown below::
   ├── utils.py               # Utility functions
   ├── imgs/                  # Example of an input screenshot image (see previous subsect.)
   ├── examples/              # Demo (includes four real screenshot images)
+  │   └── demo_namasteLoad_miCitaPrevia.ipynb
+  ├── .github/               # GitHub configuration
+  │   └── workflows/ci.yml   # Continuous Integration workflow (Tesseract + smoke test)
   └── README.md
 ```
 
@@ -79,6 +88,6 @@ Access to the original NAMASTE database is restricted and subject to ethical and
 
 ## 👥 Authors and Acknowledgments
 
-Developed within the NAMASTE project (Next Available Medical Appointment Survey for Tracking and Effectiveness). 
+NAMASTE is developed within the *Enhancing Primary Care Efficiency by Recommending Telephone Consultations* project. 
 
-© 2025 — López-Caraballo, C. et al.
+© 2025 — López-Caraballo, C. H. et al.
