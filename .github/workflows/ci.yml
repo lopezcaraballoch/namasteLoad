@@ -29,16 +29,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run Smoke Test
-        working-directory: examples
+      - name: Run smoke test (package mode)
         run: |
-          python - << 'PY'
-          import os, sys
-          sys.path.insert(0, os.path.abspath('..'))
-          from main import load_appointments
-          input_dir = "repo_screenshot_miCitaPrevia"
-          load_appointments(input_dir)
-          for f in ["REGISTRO.csv", "CITAS.csv", "CENTROMEDICO.csv", "Appointments.json"]:
-              assert os.path.exists(f), f"Missing output: {f}"
-          print("✅ Smoke Test passed successfully!")
-          PY
+          set -e
+          cd ..
+          python -m namasteLoad.main -i namasteLoad/examples/repo_screenshot_miCitaPrevia -o namasteLoad/examples
+          test -f namasteLoad/examples/REGISTRO.csv
+          test -f namasteLoad/examples/CITAS.csv
+          test -f namasteLoad/examples/CENTROMEDICO.csv
+          test -f namasteLoad/examples/Appointments.json
+          echo "✅ Smoke test passed"
