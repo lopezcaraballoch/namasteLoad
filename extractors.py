@@ -15,11 +15,20 @@ from difflib import SequenceMatcher
 re_line_time = re.compile(r'\b(\d{1,2}:\d{2})\b')  # format: "11:33"
 re_line_patient = re.compile(
     r'^(?!.*\b(CS|CENTRO|CITA|MEDICAL)\b)[A-ZÁÉÍÓÚÜÑ\s.\-]+$',
-    re.MULTILINE)
-re_line_date = re.compile(r'^(lunes|martes|miércoles|miercoles|jueves|viernes|sábado|sabado|domingo|monday|tuesday|wednesday|thursday|friday|saturday|sunday)',
-                                  re.IGNORECASE) # format: starts with ...
-re_line_type_appointment = re.compile(r'^(medicina|medical|cita|appointment|phone|enfermeria|telef)',
-                         re.IGNORECASE) # format: starts with ...
+    re.MULTILINE
+)
+
+re_line_date = re.compile(
+    r'^(lunes|martes|miércoles|miercoles|jueves|viernes|sábado|sabado|domingo|monday|tuesday|wednesday|thursday|friday|saturday|sunday)',
+    re.IGNORECASE
+) # format: starts with ...
+
+#re_line_type_appointment = re.compile(r'^(medicina|medical|cita|appointment|phone|enfermeria|telef)',re.IGNORECASE) # format: starts with ...
+re_line_type_appointment = re.compile(
+    r'^(medicina|medical|cita|appointment|phone|telefono|tel[eé]f|enfermer[ií]a|nurs|infirmary)',
+    re.IGNORECASE
+) # format: starts with ...
+
 re_line_medicalcenter = re.compile(
     r'^([A-ZÁÉÍÓÚÑ0-9\s.\-]+?,\s*C\.?\s*S\.?)$'
     r'|^([A-ZÁÉÍÓÚÑ0-9\s.\-]*CENTRO[A-ZÁÉÍÓÚÑ0-9\s.\-]*)$',
@@ -45,8 +54,10 @@ def _similar(a: str, b: str) -> float:
     """Similitud 0–1."""
     return SequenceMatcher(None, a, b).ratio()
 
-map_tipo_cita = {'T':['phone','telef'],
-                 'E':['enferme','infirmary','nurs']}
+map_tipo_cita = {
+    'T':['phone','telef','telefono','tel '],
+    'E':['enferme','infirmary','nurs']
+}
 
 
 class ImageLoad:
@@ -193,18 +204,21 @@ class RegistroExtractor:
         linea_match = None
         for ll in text.splitlines():
             ll = ll.strip()
-            match = re_line_type_appointment.search(ll)
-            if match:
-                linea_match = ll.lower()
+            ll_norm = _strip_accents(ll).lower()
+            if re_line_type_appointment.search(ll_norm):
+                linea_match = ll_norm
                 break
         tipo_cita = 'P'
         print(f"\tAppoimntment type: {linea_match} #")
+
+        lm = linea_match or ""  # evita None
+
         for kk,list_re in map_tipo_cita.items():
-            if any(lre in linea_match for lre in list_re):
+            if any(lre in lm for lre in list_re):
                 tipo_cita = kk
 
         # Próxima Cita
-        cita_cercana = lista_citas[0].proximas_citas
+        cita_cercana = lista_citas[0].proximas_citas if lista_citas else 0
 
         # Cita estándar: dos delta_fechas consecutivos iguales a 1
         cita_normal = 0
